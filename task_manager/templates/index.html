@@ -1,17 +1,12 @@
 {% extends "base.html" %}
-{% load i18n %}
-
-{% block title %}{% trans "Home" %}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <div class="p-5 mb-4 bg-light rounded-3">
-    <div class="container-fluid py-5">
-      <h1 class="display-4 fw-bold">{% trans "Hello from Hexlet!" %}</h1>
-      <p class="col-md-8 fs-5">{% trans "Practical programming courses" %}</p>
-      <hr class="my-4">
-      <a class="btn btn-primary btn-lg" href="#" role="button">{% trans "Learn more" %}</a>
-    </div>
+<div class="card my-4">
+  <div class="card-body p-5 bg-light">
+    <div class="display-4">Привет от Хекслета!</div>
+    <p class="lead">Практические курсы по программированию</p>
+    <hr>
+    <a class="btn btn-primary btn-lg" href="https://ru.hexlet.io">Узнать больше</a>
   </div>
 </div>
 {% endblock %}
