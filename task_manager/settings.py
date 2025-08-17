@@ -30,7 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "webserver",
-    "python-project-52-zib0.onrender.com",
     "127.0.0.1",
     "localhost",
 ]
