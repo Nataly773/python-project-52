@@ -20,19 +20,16 @@ from dotenv import load_dotenv
 load_dotenv()  # загружаем .env для локальной разработки и продакшена
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-if os.getenv("DATABASE_URL"):
-    # Продакшен: PostgreSQL
-    DATABASES = {
-        'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
-else:
-    # Локальная разработка: SQLite
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES["default"].update(db_from_env)
+
 
 
 # Quick-start development settings - unsuitable for production
