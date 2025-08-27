@@ -37,7 +37,7 @@
               <li class="nav-item">
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
-                    {% bootstrap_button content=_("Logout") button_type="submit" button_class="nav-link" element="input" %}
+                    {% bootstrap_button content=_("Вход") button_type="submit" button_class="nav-link" element="input" %}
                 </form>
               </li>
               {% else %}
