@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+<main>
+  <div class="container-md mt-3">
+    <h1>{% translate "View task" %}</h1>
+    <div class="container bg-secondary text-white border rounded-3 rounded-bottom-0 py-2 px-3">
+        <h2>{{ task.name }}</h2>
+    </div>
+    <div class="container bg-light border rounded-3 rounded-top-0 p-3">
+        <p>{{ task.description }}</p>
+        <hr>
+        <div class="container ">
+        <div class="row p-1">
+            <div class="col">{% translate "Author" %}</div>
+            <div class="col">{{ task.author }}</div>
+        </div>
+        <div class="row p-1">
+            <div class="col">{% translate "Executor" %}</div>
+            <div class="col">{{ task.executor }}</div>
+        </div>
+        <div class="row p-1">
+            <div class="col">{% translate "Status" %}</div>
+            <div class="col">{{ task.status }}</div>
+        </div>
+        <div class="row p-1">
+            <div class="col">{% translate "Date of creation" %}</div>
+            <div class="col">{{ task.created_at|date:"d.m.Y H:i" }}</div>
+        </div>
+        <div class="row p-1">
+            <div class="col">
+            <h6>{% translate "Labels" %}:</h6>
+            <ul>
+                {% for label in task.labels.all %}
+                    <li>{{ label.name }}</li>
+                {% endfor %}                
+            </ul>
+            </div>
+        </div>
+        <div class="row p-1">
+            <div class="col">
+            <a href="{% url 'tasks:update' task.id %}">{% translate "Edit" %}</a><br>
+            <a href="{% url 'tasks:delete' task.id %}">{% translate "Delete" %}</a>
+            </div>
+        </div>
+        </div>
+    </div>
+</main> 
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>{% trans "Delete status" %}</h2>
+  <p>{% trans "Are you sure you want to delete" %} <b>{{ object.name }}</b>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">{% trans "Yes, delete" %}</button>
+   
+  </form>
+</div>
+{% endblock %}

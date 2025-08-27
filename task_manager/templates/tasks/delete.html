@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Удаление задачи</h1>
+
+<p>Вы уверены, что хотите удалить задачу <strong>{{ object.name }}</strong>?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Удалить</button>
+  
+</form>
+{% endblock %}
