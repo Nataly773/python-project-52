@@ -8,7 +8,6 @@
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-    <!-- {% bootstrap_messages %} -->
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
@@ -42,10 +41,10 @@
               </li>
               {% else %}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">{% translate 'Login' %}</a>
+                <a class="nav-link" href="{% url 'login' %}">{% translate 'Вход' %}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:create' %}">{% translate 'Registration' %}</a>
+                <a class="nav-link" href="{% url 'users:create' %}">{% translate 'Регистрация' %}</a>
               </li>
               {% endif %}              
             </ul>
