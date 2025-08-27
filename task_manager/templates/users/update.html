@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+<main>
+  <div class="container-md mt-3">
+    <h1>{% translate "Change user" %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% bootstrap_button button_type="submit" content=_('Change') %}
+    </form>
+</main>
+{% endblock %}

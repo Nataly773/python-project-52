@@ -18,7 +18,8 @@ from dotenv import load_dotenv
 
 
 load_dotenv()  # загружаем .env для локальной разработки и продакшена
-BASE_DIR = Path(__file__).resolve().parent.parent
+
+BASE_DIR = Path(__file__).resolve().parent.parent 
 
 DATABASES = {
     "default": {
@@ -27,10 +28,10 @@ DATABASES = {
     }
 }
 
+# Если есть переменная окружения DATABASE_URL (для продакшена), используем её
 db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES["default"].update(db_from_env)
-
-
+if db_from_env:
+    DATABASES["default"].update(db_from_env)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -61,6 +62,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_bootstrap5',
+    'task_manager.users' 
 ]
 
 MIDDLEWARE = [
@@ -78,7 +81,7 @@ ROOT_URLCONF = 'task_manager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "task_manager" / "templates"], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

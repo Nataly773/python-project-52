@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtualenv
+.venv/
+env/
+venv/
+
+# SQLite (если не нужно хранить в git)
+db.sqlite3
+
+# IDE
+.vscode/
+.idea/
+
+# Mac / Linux system files
+.DS_Store
+*.swp
+
+# Django migrations (если хочешь хранить — убери эту строку)
+*/migrations/__pycache__/
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Static files (если собираются автоматически)
+staticfiles/
