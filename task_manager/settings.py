@@ -9,12 +9,13 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from django.conf.global_settings import DATABASES
 from pathlib import Path
 import os
 import dj_database_url
 from dotenv import load_dotenv
 
+import sys
 
 
 load_dotenv()  # загружаем .env для локальной разработки и продакшена
@@ -22,14 +23,21 @@ load_dotenv()  # загружаем .env для локальной разраб�
 BASE_DIR = Path(__file__).resolve().parent.parent 
 
 
-DATABASES = {  # noqa
-    "default": dj_database_url.config(
-        default="sqlite:///db.sqlite3",
-        conn_max_age=600,
-        conn_health_checks=True,
-    ),
-}
-
+if "test" in sys.argv:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",  # временная база для тестов
+        }
+    }
+else:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+            conn_max_age=600,
+            conn_health_checks=True,
+        ),
+    }
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -151,6 +159,15 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://0.0.0.0",
+    "http://webserver",  # имя контейнера Hexlet
+    "https://task-manager-52.pupsidian.ru",
+]
+
+FIXTURE_DIRS = ("task_manager/fixtures/",)
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
