@@ -201,7 +201,7 @@ msgstr "Действия"
 #: task_manager/templates/tasks/show.html:44
 #: task_manager/templates/users/index.html:23
 msgid "Edit"
-msgstr "Редактировать"
+msgstr "Изменить"
 
 #: task_manager/templates/labels/index.html:38
 #: task_manager/templates/statuses/index.html:28
