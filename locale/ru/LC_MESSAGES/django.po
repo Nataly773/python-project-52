@@ -31,7 +31,7 @@ msgstr "Пароль"
 #: task_manager/tasks/forms.py:60 task_manager/templates/statuses/index.html:16
 #: task_manager/templates/tasks/index.html:21
 msgid "Name"
-msgstr "Название"
+msgstr "Имя"
 
 #: task_manager/labels/forms.py:20 task_manager/statuses/forms.py:24
 msgid "Task status with this Name already exists."
@@ -183,8 +183,8 @@ msgid "ID"
 msgstr "ID"
 
 #: task_manager/templates/labels/index.html:22
-msgid "Имя"
-msgstr "Название"
+msgid "Название"
+msgstr "Имя"
 
 #: task_manager/templates/labels/index.html:23
 msgid "Дата создания"
