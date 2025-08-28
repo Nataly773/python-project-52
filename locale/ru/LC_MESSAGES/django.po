@@ -288,7 +288,7 @@ msgstr "Дата создания"
 
 #: task_manager/templates/users/create.html:12
 msgid "Registr"
-msgstr "Регистрация"
+msgstr "Зарегистрировать"
 
 #: task_manager/templates/users/delete.html:10
 msgid "Deleting user"
