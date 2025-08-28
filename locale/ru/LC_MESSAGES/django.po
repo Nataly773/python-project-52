@@ -222,7 +222,7 @@ msgstr "Войти"
 #: task_manager/templates/statuses/create.html:6
 #: task_manager/templates/statuses/index.html:8
 msgid "Create new status"
-msgstr "Создать новый статус"
+msgstr "Создать статус"
 
 #: task_manager/templates/statuses/create.html:10
 msgid "Create"
@@ -256,7 +256,7 @@ msgstr "Редактировать статус"
 
 #: task_manager/templates/statuses/update.html:10
 msgid "Update"
-msgstr "Обновить"
+msgstr "Изменить"
 
 #: task_manager/templates/tasks/index.html:8
 msgid "Create task"
