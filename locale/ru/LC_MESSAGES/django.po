@@ -312,7 +312,7 @@ msgstr "Пользователей пока нет"
 
 #: task_manager/templates/users/update.html:8
 msgid "Change user"
-msgstr "Редактировать пользователя"
+msgstr "Изменение пользователя"
 
 #: task_manager/templates/users/update.html:12
 msgid "Change"

@@ -1,10 +1,13 @@
-# users/forms.py
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
 from task_manager.users.models import User
+
+
+
+User = get_user_model()
 
 
 class CreateUserForm(UserCreationForm):
@@ -85,4 +88,35 @@ class CreateUserForm(UserCreationForm):
                 self.add_error(
                     "username", _("A user with this name already exists.")
                 )
+        return username
+    
+
+
+    from django import forms
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UpdateUserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("username", "first_name", "last_name")
+        labels = {
+            "username": "Username",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+        }
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        if len(username) > 150:
+            raise forms.ValidationError("Username is too long (maximum 150 characters).")
+        if not all(c.isalnum() or c in "@.+-_" for c in username):
+            raise forms.ValidationError(
+                "Please enter a valid username. Letters, numbers and @/./+/-/_ only."
+            )
+        # Проверка уникальности, исключая текущего пользователя
+        existing_user = User.objects.filter(username=username).exclude(pk=self.instance.pk).first()
+        if existing_user:
+            raise forms.ValidationError("A user with this username already exists.")
         return username
