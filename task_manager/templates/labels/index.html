@@ -32,13 +32,9 @@
                     <td>{{ label.created_at|date:"d.m.Y H:i" }}</td> <!-- формат даты -->
                     <td>
                        <a href="{% url 'labels:update' label.id %}">{% translate "Edit" %}</a><br>
-                       <form action="{% url 'labels:delete' label.id %}" method="post" style="display:inline;">
-                           {% csrf_token %}
-                           <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
-                               {% translate "Delete" %}
-                           </button>
-                       </form>
-                    </td>
+                       
+                          <a href="{% url 'labels:delete' label.id %}">{% trans "Удалить" %}</a>
+                        </td>
                 </tr>
             {% empty %}
                 <tr>
