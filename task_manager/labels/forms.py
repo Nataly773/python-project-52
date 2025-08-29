@@ -9,7 +9,7 @@ class CreateLabelForm(forms.ModelForm):
     class Meta:
         model = Label
         fields = ["name"]
-        labels = {"name": _("Name")}
+        labels = {"name": _("Имя")}
 
     def clean_name(self):
         label_name = self.cleaned_data["name"]
