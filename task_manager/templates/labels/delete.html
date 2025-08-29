@@ -8,7 +8,7 @@
 
     <form method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">{% trans "Удалить" %}</button>
+        <button type="submit" class="btn btn-danger">{% trans "Yes, delete" %}</button>
         <a href="{% url 'labels:index' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
     </form>
 </div>

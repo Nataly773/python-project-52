@@ -247,6 +247,7 @@ msgstr "Вы уверены, что хотите удалить"
 
 #: task_manager/templates/statuses/delete.html:10
 #: task_manager/templates/users/delete.html:14
+#: task_manager/templates/labels/delete.html:11
 msgid "Yes, delete"
 msgstr "Да, удалить"
 
