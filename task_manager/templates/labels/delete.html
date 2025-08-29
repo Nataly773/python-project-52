@@ -3,13 +3,13 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1>{% trans "Создать метку" %}</h1>
+    <h1>{% trans "Удаление метки" %}</h1>
+    <p>{% blocktrans %}Вы уверены, что хотите удалить метку "{{ label.name }}"?{% endblocktrans %}</p>
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">{% trans "Создать" %}</button>
-        
+        <button type="submit" class="btn btn-danger">{% trans "Удалить" %}</button>
+        <a href="{% url 'labels:index' %}" class="btn btn-secondary">{% trans "Отмена" %}</a>
     </form>
 </div>
 {% endblock %}
