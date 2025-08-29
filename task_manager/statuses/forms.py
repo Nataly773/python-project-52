@@ -12,7 +12,7 @@ class CreateStatusForm(forms.ModelForm):
             "name",
         ]
         labels = {
-            "name": _("Name"),
+            "name": _("Имя"),
         }
 
     def clean_name(self):
