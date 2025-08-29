@@ -1,9 +1,9 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
-from django.db import models
 
 from task_manager.statuses.models import Status
-    
+
+
 class CreateStatusForm(forms.ModelForm):
 
     class Meta:
@@ -12,7 +12,7 @@ class CreateStatusForm(forms.ModelForm):
             "name",
         ]
         labels = {
-            "name": _("Имя"),
+            "name": _("Name"),
         }
 
     def clean_name(self):
