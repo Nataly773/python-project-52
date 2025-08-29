@@ -173,6 +173,14 @@ msgstr "Создать метку"
 msgid "Создать"
 msgstr "Создать"
 
+#: task_manager/templates/statuses/create.html:20
+msgid "Имя"
+msgstr "Имя"
+
+#: task_manager/templates/statuses/create.html:10
+msgid "Create status"
+msgstr "Создать статус"
+
 #: task_manager/templates/labels/index.html:6
 msgid "Метки"
 msgstr "Метки"
