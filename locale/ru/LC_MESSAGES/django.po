@@ -48,7 +48,7 @@ msgstr "Метка успешно создана."
 
 #: task_manager/labels/views.py:59
 msgid "Label successfully updated"
-msgstr "Метка успешно обновлена"
+msgstr "Метка успешно изменена"
 
 #: task_manager/labels/views.py:89
 msgid "Cannot delete label because it is in use"
@@ -321,6 +321,10 @@ msgstr "Пользователей пока нет"
 #: task_manager/templates/users/update.html:8
 msgid "Change user"
 msgstr "Изменение пользователя"
+
+#: task_manager/templates/statuses/update.html:8
+msgid "Changing status"
+msgstr "Изменить статус"
 
 #: task_manager/templates/users/update.html:12
 msgid "Change"
