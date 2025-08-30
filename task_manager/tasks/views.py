@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 
 from .forms import CreateTaskForm
 from .models import Task
+from django.shortcuts import get_object_or_404
 
 # Базовый класс для всех представлений задач
 class BaseTaskView(LoginRequiredMixin, View):
