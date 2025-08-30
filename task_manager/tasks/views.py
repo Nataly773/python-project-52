@@ -8,6 +8,9 @@ from django.urls import reverse_lazy
 from .forms import CreateTaskForm
 from .models import Task
 from django.shortcuts import get_object_or_404
+from task_manager.tasks.filters import TaskFilter
+from task_manager.tasks.forms import CreateTaskForm
+
 
 # Базовый класс для всех представлений задач
 class BaseTaskView(LoginRequiredMixin, View):
@@ -35,13 +38,19 @@ class CreateTaskView(BaseTaskView):
         return render(request, self.template_name, {"form": form})
 
 # Список задач
-class IndexTaskView(BaseTaskView):
-    template_name = "tasks/index.html"
 
+class IndexTaskView(BaseTaskView):
     def get(self, request):
         tasks = Task.objects.all()
-        form = CreateTaskForm()  # добавляем форму в контекст
-        return render(request, self.template_name, {"tasks": tasks, "form": form})
+        filterset = TaskFilter(request.GET, queryset=tasks, request=request)
+        return render(
+            request,
+            "tasks/index.html",
+            context={
+                "form": filterset.form,
+                "tasks": filterset.qs,
+            },
+        )
 
 
 

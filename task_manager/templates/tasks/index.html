@@ -19,9 +19,7 @@
                         id="self_tasks"
                         {% if request.GET.self_tasks %}checked{% endif %}
                     >
-                    <label class="form-check-label" for="self_tasks">
-                        {% trans "Только свои задачи" %}
-                    </label>
+                    
                 </div>
 
                 {% bootstrap_button button_type="submit" content=_("Show") %}
