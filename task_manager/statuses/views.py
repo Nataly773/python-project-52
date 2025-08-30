@@ -29,28 +29,22 @@ class IndexStatusesView(BaseStatusView):
         return render(
             request, "statuses/index.html", context={"statuses": statuses}
         )
-    
-class CreateTaskView(BaseStatusView):
-    template_name = "tasks/create.html"
-    form_class = CreateTaskForm
 
+
+class CreateStatusesView(BaseStatusView):
     def get(self, request):
-        form = self.form_class()
-        return self._render_form(request, form)
+        return self._render_form(request, CreateStatusForm())
 
     def post(self, request):
-        form = self.form_class(request.POST)
+        form = CreateStatusForm(request.POST)
         if form.is_valid():
-            task = form.save(commit=False)
-            task.author = request.user
-            task.save()
-            form.save_m2m()
-            messages.success(request, _("Task successfully created"))
-            return redirect("tasks:index")
+            form.save()
+            messages.success(request, _("Status successfully created"))
+            return redirect("statuses:index")
         return self._render_form(request, form)
 
     def _render_form(self, request, form):
-        return render(request, self.template_name, {"form": form})
+        return render(request, "statuses/create.html", context={"form": form})
 
 
 class UpdateStatusesView(BaseStatusView):

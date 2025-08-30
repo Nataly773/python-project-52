@@ -9,8 +9,9 @@ from task_manager.tasks.forms import CreateTaskForm
 from task_manager.tasks.models import Task
 
 
-class BaseTaskView(LoginRequiredMixin, View):
-    login_url = "/login/"
+class BaseStatusView(LoginRequiredMixin, View):
+    login_url = reverse_lazy("login")
+    redirect_field_name = None
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -18,6 +19,36 @@ class BaseTaskView(LoginRequiredMixin, View):
                 request, _("You are not logged in! Please sign in.")
             )
         return super().dispatch(request, *args, **kwargs)
+
+
+class IndexStatusesView(BaseStatusView):
+    def get(self, request):
+        statuses = Status.objects.all().order_by("id")
+        return render(
+            request, "statuses/index.html", context={"statuses": statuses}
+        )
+    
+class CreateTaskView(BaseStatusView):
+    template_name = "tasks/create.html"
+    form_class = CreateTaskForm
+
+    def get(self, request):
+        form = self.form_class()
+        return self._render_form(request, form)
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.author = request.user
+            task.save()
+            form.save_m2m()
+            messages.success(request, _("Task successfully created"))
+            return redirect("tasks:index")
+        return self._render_form(request, form)
+
+    def _render_form(self, request, form):
+        return render(request, self.template_name, {"form": form})
 
 
 class IndexTaskView(BaseTaskView):
@@ -34,24 +65,6 @@ class IndexTaskView(BaseTaskView):
         )
 
 
-class CreateTaskView(BaseTaskView):
-    def get(self, request):
-        form = CreateTaskForm()
-        return self._render_form(request, form)
-
-    def post(self, request):
-        form = CreateTaskForm(request.POST)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.author = request.user
-            task.save()
-            form.save_m2m()
-            messages.success(request, _("Task successfully created"))
-            return redirect("tasks:index")
-        return self._render_form(request, form)
-
-    def _render_form(self, request, form):
-        return render(request, "tasks/create.html", context={"form": form})
 
 
 class DeleteTaskView(BaseTaskView):
