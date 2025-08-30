@@ -117,7 +117,7 @@ msgstr "Задача успешно удалена"
 
 #: task_manager/tasks/views.py:98
 msgid "Task successfully updated"
-msgstr "Задача успешно обновлена"
+msgstr "Задача успешно изменена"
 
 #: task_manager/templates/base.html:7 task_manager/templates/base.html:17
 msgid "Task manager"
