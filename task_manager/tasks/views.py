@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views import View
-from django.core.paginator import Paginator
+
 from task_manager.tasks.filters import TaskFilter
 from task_manager.tasks.forms import CreateTaskForm
 from task_manager.tasks.models import Task
@@ -22,20 +22,14 @@ class BaseTaskView(LoginRequiredMixin, View):
 
 class IndexTaskView(BaseTaskView):
     def get(self, request):
-        tasks = Task.objects.select_related('author', 'executor').prefetch_related('labels')
+        tasks = Task.objects.all()
         filterset = TaskFilter(request.GET, queryset=tasks, request=request)
-        filtered_tasks = filterset.qs
-
-        paginator = Paginator(filtered_tasks, 20)  # 20 задач на страницу
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-
         return render(
             request,
             "tasks/index.html",
             context={
                 "form": filterset.form,
-                "tasks": page_obj,  # передаем page_obj
+                "tasks": filterset.qs,
             },
         )
 

@@ -1,16 +1,11 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import View
-from django.views.generic import DeleteView
+
 from task_manager.tasks.models import Task
-
-
 
 from .forms import CreateStatusForm
 from .models import Status
@@ -18,7 +13,7 @@ from .models import Status
 
 class BaseStatusView(LoginRequiredMixin, View):
     login_url = reverse_lazy("login")
-    
+    redirect_field_name = None
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
