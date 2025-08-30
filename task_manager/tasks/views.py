@@ -6,6 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views import View
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from task_manager.tasks.filters import TaskFilter
 from task_manager.tasks.forms import CreateTaskForm
@@ -50,7 +52,8 @@ class CreateTaskView(BaseTaskView):
             task.save()
             form.save_m2m()
             messages.success(request, _("Task successfully created"))
-            return redirect("tasks:index")
+            # Заменяем redirect на явный HttpResponseRedirect
+            return HttpResponseRedirect(reverse("tasks:index"))
         return self._render_form(request, form)
 
     def _render_form(self, request, form):
