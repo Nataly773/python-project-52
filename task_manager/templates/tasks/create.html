@@ -5,6 +5,11 @@
 {% bootstrap_css %}
 <main>
   <div class="container-md mt-3">
+    {% if messages %}
+      {% for message in messages %}
+         <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
     <h1>{% translate "Create task" %}</h1>
     <form method="post">
         {% csrf_token %}
