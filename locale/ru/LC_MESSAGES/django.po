@@ -233,6 +233,7 @@ msgid "Create new status"
 msgstr "Создать статус"
 
 #: task_manager/templates/statuses/create.html:10
+#: task_manager/templates/tasks/create.html:12
 msgid "Create"
 msgstr "Создать"
 
