@@ -1,40 +1,26 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
+from django.urls import reverse_lazy
 
-from task_manager.tasks.filters import TaskFilter
-from task_manager.tasks.forms import CreateTaskForm
-from task_manager.tasks.models import Task
+from .forms import CreateTaskForm
+from .models import Task
 
-
-class BaseStatusView(LoginRequiredMixin, View):
+# Базовый класс для всех представлений задач
+class BaseTaskView(LoginRequiredMixin, View):
     login_url = reverse_lazy("login")
-    redirect_field_name = None
+    template_name = None  # будем задавать в наследниках
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("You are not logged in! Please sign in.")
-            )
-        return super().dispatch(request, *args, **kwargs)
-
-
-class IndexStatusesView(BaseStatusView):
-    def get(self, request):
-        statuses = Status.objects.all().order_by("id")
-        return render(
-            request, "statuses/index.html", context={"statuses": statuses}
-        )
-    
-class CreateTaskView(BaseStatusView):
+# Создание задачи
+class CreateTaskView(BaseTaskView):
     template_name = "tasks/create.html"
     form_class = CreateTaskForm
 
     def get(self, request):
         form = self.form_class()
-        return self._render_form(request, form)
+        return render(request, self.template_name, {"form": form})
 
     def post(self, request):
         form = self.form_class(request.POST)
@@ -45,24 +31,16 @@ class CreateTaskView(BaseStatusView):
             form.save_m2m()
             messages.success(request, _("Task successfully created"))
             return redirect("tasks:index")
-        return self._render_form(request, form)
-
-    def _render_form(self, request, form):
         return render(request, self.template_name, {"form": form})
 
-
+# Список задач
 class IndexTaskView(BaseTaskView):
+    template_name = "tasks/index.html"
+
     def get(self, request):
         tasks = Task.objects.all()
-        filterset = TaskFilter(request.GET, queryset=tasks, request=request)
-        return render(
-            request,
-            "tasks/index.html",
-            context={
-                "form": filterset.form,
-                "tasks": filterset.qs,
-            },
-        )
+        form = CreateTaskForm()  # добавляем форму в контекст
+        return render(request, self.template_name, {"tasks": tasks, "form": form})
 
 
 
