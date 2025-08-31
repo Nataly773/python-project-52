@@ -65,13 +65,11 @@ class CreateTaskForm(forms.ModelForm):
         }
         widgets = {
             "status": forms.Select(attrs={"class": "form-control"}),
+            "executor": forms.Select(attrs={"class": "form-control"}),
             "labels": forms.SelectMultiple(attrs={"class": "form-control"}),
-        }
-        empty_label = {
-            "status": "---------",
-            "executor": "---------",
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["executor"].required = False
+        self.fields["executor"].empty_label = "---------" 

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from .forms import CreateTaskForm
 from .models import Task
@@ -18,24 +19,19 @@ class BaseTaskView(LoginRequiredMixin, View):
     template_name = None  # будем задавать в наследниках
 
 # Создание задачи
-class CreateTaskView(BaseTaskView):
+
+class CreateTaskView(BaseTaskView, CreateView):
     template_name = "tasks/create.html"
     form_class = CreateTaskForm
+    success_url = reverse_lazy("tasks:index")
 
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {"form": form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.author = request.user
-            task.save()
-            form.save_m2m()
-            messages.success(request, _("Task successfully created"))
-            return redirect("tasks:index")
-        return render(request, self.template_name, {"form": form})
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.author = self.request.user
+        task.save()
+        form.save_m2m()
+        messages.success(self.request, _("Task successfully created"))
+        return super().form_valid(form)
 
 # Список задач
 
