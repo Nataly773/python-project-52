@@ -6,14 +6,18 @@ from .models import Task
 from task_manager.statuses.models import Status
 from task_manager.labels.models import Label
 
+
 User = get_user_model()
+
 
 class TaskCRUDTest(TestCase):
     def setUp(self):
         self.client = Client()
         # Создаём пользователей
-        self.user1 = User.objects.create_user(username='user1', password='pass1')
-        self.user2 = User.objects.create_user(username='user2', password='pass2')
+        self.user1 = User.objects.create_user(username='user1', 
+                                              password='pass1')
+        self.user2 = User.objects.create_user(username='user2',
+                                               password='pass2')
         # Создаём статус и метку
         self.status = Status.objects.create(name='New')
         self.label = Label.objects.create(name='Important')
@@ -66,13 +70,17 @@ class TaskCRUDTest(TestCase):
 
     def test_delete_task_by_non_author(self):
         self.client.login(username='user2', password='pass2')
-        response = self.client.post(reverse('tasks:delete', args=[self.task.id]))
+        response = self.client.post(reverse('tasks:delete', 
+                                            args=[self.task.id]))
         self.assertEqual(Task.objects.count(), 1)
         self.assertRedirects(response, reverse('tasks:index'))
         # Проверяем сообщение об ошибке
         messages = list(response.wsgi_request._messages)
-        self.assertEqual(str(messages[0]), 'Задачу может удалить только её автор.')
+        self.assertEqual(str(messages[0]), 
+                         'Задачу может удалить только её автор.')
 
     def test_access_requires_login(self):
         response = self.client.get(reverse('tasks:create'))
-        self.assertRedirects(response, '/login/?next=' + reverse('tasks:create'))
+        self.assertRedirects(response, 
+                             '/login/?next=' + reverse('tasks:create')
+                             )

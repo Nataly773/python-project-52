@@ -1,7 +1,4 @@
 from django.test import TestCase
-
-# Create your tests here.
-from django.test import TestCase
 from django.urls import reverse
 from task_manager.users.models import User
 from task_manager.tasks.models import Task
@@ -56,7 +53,9 @@ class UserCRUDTests(TestCase):
     def test_update_other_user_forbidden(self):
         """Обычный пользователь не может обновить другого"""
         self.client.login(username="testuser", password="12345")
-        response = self.client.post(reverse("users:update", args=[self.admin.id]), {
+        response = self.client.post(reverse("users:update", 
+                                            args=[self.admin.id]), 
+                                            {
             "username": "hacker",
             "email": "hacker@example.com",
             "password1": "hackpass123",
@@ -69,19 +68,22 @@ class UserCRUDTests(TestCase):
     def test_delete_self_user(self):
         """Пользователь может удалить себя, если нет задач"""
         self.client.login(username="testuser", password="12345")
-        response = self.client.post(reverse("users:delete", args=[self.user.id]))
+        response = self.client.post(reverse("users:delete", 
+                                            args=[self.user.id]))
         self.assertEqual(response.status_code, 302)
         self.assertFalse(User.objects.filter(id=self.user.id).exists())
 
     def test_delete_user_in_use(self):
         """Нельзя удалить пользователя, если он исполнитель задачи"""
-        self.client.login(username="testuser", password="12345")
+        self.client.login(username="testuser", 
+                          password="12345")
         Task.objects.create(
             name="Test Task",
             status=self.status,
             author=self.admin,
             executor=self.user,
         )
-        response = self.client.post(reverse("users:delete", args=[self.user.id]))
+        response = self.client.post(reverse("users:delete", 
+                                            args=[self.user.id]))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(User.objects.filter(id=self.user.id).exists())

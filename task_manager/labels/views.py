@@ -10,7 +10,6 @@ from task_manager.labels.models import Label
 from task_manager.tasks.models import Task
 
 
-
 class BaseLabelsView(LoginRequiredMixin, View):
     login_url = reverse_lazy("login")
     redirect_field_name = None

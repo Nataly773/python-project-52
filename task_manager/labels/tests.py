@@ -11,7 +11,9 @@ User = get_user_model()
 
 class LabelCRUDTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username="testuser", password="12345")
+        self.user = User.objects.create_user(
+            username="testuser", 
+            password="12345")
         self.client.login(username="testuser", password="12345")
         self.label = Label.objects.create(name="Initial Label")
 
@@ -21,11 +23,15 @@ class LabelCRUDTest(TestCase):
         self.assertContains(response, self.label.name)
 
     def test_create_label(self):
-        response = self.client.post(reverse("labels:create"), {"name": "New Label"})
+        response = self.client.post(
+            reverse("labels:create"), 
+            {"name": "New Label"})
         self.assertRedirects(response, reverse("labels:index"))
         self.assertTrue(Label.objects.filter(name="New Label").exists())
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "The label was successfully created.")
+        self.assertEqual(str(messages[0]), 
+                         "The label was successfully created."
+                         )
 
     def test_update_label(self):
         response = self.client.post(
@@ -39,7 +45,9 @@ class LabelCRUDTest(TestCase):
         self.assertEqual(str(messages[0]), "Label successfully updated")
 
     def test_delete_label_not_in_use(self):
-        response = self.client.post(reverse("labels:delete", args=[self.label.pk]))
+        response = self.client.post(reverse("labels:delete", 
+                                            args=[self.label.pk])
+                                            )
         self.assertRedirects(response, reverse("labels:index"))
         self.assertFalse(Label.objects.filter(pk=self.label.pk).exists())
         messages = list(get_messages(response.wsgi_request))
@@ -47,12 +55,19 @@ class LabelCRUDTest(TestCase):
 
     def test_delete_label_in_use(self):
         task = Task.objects.create(
-            name="Test Task", description="Task desc", status_id=1, author=self.user
+            name="Test Task", 
+            description="Task desc", 
+            status_id=1, 
+            author=self.user
         )
         task.labels.add(self.label)
-        response = self.client.post(reverse("labels:delete", args=[self.label.pk]))
+        response = self.client.post(reverse("labels:delete", 
+                                            args=[self.label.pk])
+                                            )
         self.assertRedirects(response, reverse("labels:index"))
         self.assertTrue(Label.objects.filter(pk=self.label.pk).exists())
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "Cannot delete label because it is in use")
+        self.assertEqual(str(messages[0]), 
+                         "Cannot delete label because it is in use"
+                         )
 

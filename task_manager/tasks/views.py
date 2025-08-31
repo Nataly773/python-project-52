@@ -10,16 +10,12 @@ from .forms import CreateTaskForm
 from .models import Task
 from django.shortcuts import get_object_or_404
 from task_manager.tasks.filters import TaskFilter
-from task_manager.tasks.forms import CreateTaskForm
 from django.urls import reverse
-from django_filters.views import FilterView
-
 
 
 class BaseTaskView(LoginRequiredMixin, View):
     login_url = reverse_lazy("login")
-    template_name = None  
-
+    template_name = None
 
 
 class CreateTaskView(BaseTaskView):
@@ -43,7 +39,6 @@ class CreateTaskView(BaseTaskView):
             print(form.errors)  
         return render(request, self.template_name, {"form": form})
 
-# Список задач
 
 class IndexTaskView(BaseTaskView):
     def get(self, request):
@@ -59,17 +54,15 @@ class IndexTaskView(BaseTaskView):
         )
 
 
-
-
-
-
 class DeleteTaskView(LoginRequiredMixin, View):
 
     def dispatch(self, request, *args, **kwargs):
         """Проверка, что пользователь — автор задачи, до любого метода."""
         self.task = get_object_or_404(Task, pk=kwargs["pk"])
         if self.task.author != request.user:
-            messages.error(request, _("A task can only be deleted by its author."))
+            messages.error(request, 
+                           _("A task can only be deleted by its author.")
+                           )
             return redirect("tasks:index")
         return super().dispatch(request, *args, **kwargs)
 

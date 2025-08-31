@@ -9,8 +9,6 @@ from task_manager.tasks.models import Task
 
 from .forms import CreateStatusForm
 from .models import Status
-from django.urls import reverse_lazy
-
 
 
 class BaseStatusView(LoginRequiredMixin, View):
