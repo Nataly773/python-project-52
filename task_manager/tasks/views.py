@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404
 from task_manager.tasks.filters import TaskFilter
 from task_manager.tasks.forms import CreateTaskForm
 from django.urls import reverse
+from django_filters.views import FilterView
 
 
 
@@ -56,6 +57,8 @@ class IndexTaskView(BaseTaskView):
                 "tasks": filterset.qs,
             },
         )
+
+
 
 
 

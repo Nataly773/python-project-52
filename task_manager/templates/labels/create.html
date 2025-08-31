@@ -5,7 +5,7 @@
 {% bootstrap_css %}
 <main>
   <div class="container-md mt-3">
-    <h1>{% translate "Create label" %}</h1>
+    <h1>{% trans "Create label" %}</h1>
     <form action="{% url 'labels:create' %}" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}

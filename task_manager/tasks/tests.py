@@ -64,7 +64,6 @@ class TaskCRUDTest(TestCase):
         self.assertEqual(self.task.name, 'Updated Task')
         self.assertRedirects(response, reverse('tasks:index'))
 
-    
     def test_delete_task_by_non_author(self):
         self.client.login(username='user2', password='pass2')
         response = self.client.post(reverse('tasks:delete', args=[self.task.id]))

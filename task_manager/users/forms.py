@@ -10,6 +10,7 @@ from task_manager.users.models import User
 User = get_user_model()
 
 
+
 class CreateUserForm(UserCreationForm):
 
     class Meta:

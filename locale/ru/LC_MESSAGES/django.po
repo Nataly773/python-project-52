@@ -153,7 +153,7 @@ msgstr "Регистрация"
 
 #: task_manager/templates/index.html:8
 msgid "Greetings from Hexlet!"
-msgstr "Приветствие от Hexlet!"
+msgstr "Привет от Hexlet!"
 
 #: task_manager/templates/index.html:9
 msgid "Practical programming courses"
@@ -163,7 +163,7 @@ msgstr "Практические курсы программирования"
 msgid "Learn more"
 msgstr "Узнать больше"
 
-#: task_manager/templates/labels/create.html:6
+#: task_manager/templates/labels/create.html:8
 #: task_manager/templates/labels/delete.html:6
 #: task_manager/templates/labels/index.html:9
 msgid "Создать метку"
@@ -223,6 +223,11 @@ msgstr "Удалить"
 #: task_manager/templates/labels/index.html:45
 msgid "Нет меток"
 msgstr "Нет меток"
+
+
+#: task_manager/templates/labels/create.html:12
+msgid "Create"
+msgstr "Создать"
 
 #: task_manager/templates/login.html:12
 msgid "Log in"

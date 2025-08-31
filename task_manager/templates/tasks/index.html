@@ -11,17 +11,6 @@
             <form action="{% url 'tasks:index' %}" method="get">
                 {% bootstrap_form form %}
 
-                <div class="form-check mb-3">
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        name="self_tasks"
-                        id="self_tasks"
-                        {% if request.GET.self_tasks %}checked{% endif %}
-                    >
-                    
-                </div>
-
                 {% bootstrap_button button_type="submit" content=_("Show") %}
             </form>
         </div>
