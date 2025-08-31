@@ -4,13 +4,14 @@ from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
 
+from django.http import HttpResponseRedirect
 from .forms import CreateTaskForm
 from .models import Task
 from django.shortcuts import get_object_or_404
 from task_manager.tasks.filters import TaskFilter
 from task_manager.tasks.forms import CreateTaskForm
+from django.urls import reverse
 
 
 # Базовый класс для всех представлений задач
@@ -34,9 +35,11 @@ class CreateTaskView(BaseTaskView):
             task = form.save(commit=False)
             task.author = request.user
             task.save()
-            form.save_m2m()
+            form.save_m2m()  # для поля labels
             messages.success(request, _("Task successfully created"))
             return HttpResponseRedirect(reverse("tasks:index"))
+        else:
+            print(form.errors)  # <-- вывод ошибок для отладки
         return render(request, self.template_name, {"form": form})
 
 # Список задач
