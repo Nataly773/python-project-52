@@ -20,18 +20,24 @@ class BaseTaskView(LoginRequiredMixin, View):
 
 # Создание задачи
 
-class CreateTaskView(BaseTaskView, CreateView):
+class CreateTaskView(BaseTaskView):
     template_name = "tasks/create.html"
     form_class = CreateTaskForm
-    success_url = reverse_lazy("tasks:index")
 
-    def form_valid(self, form):
-        task = form.save(commit=False)
-        task.author = self.request.user
-        task.save()
-        form.save_m2m()
-        messages.success(self.request, _("Task successfully created"))
-        return super().form_valid(form)
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.author = request.user
+            task.save()
+            form.save_m2m()
+            messages.success(request, _("Task successfully created"))
+            return HttpResponseRedirect(reverse("tasks:index"))
+        return render(request, self.template_name, {"form": form})
 
 # Список задач
 
