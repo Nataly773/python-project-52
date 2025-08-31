@@ -55,25 +55,25 @@ class IndexTaskView(BaseTaskView):
 
 
 
-class DeleteTaskView(BaseTaskView):
-    def get(self, request, pk):
-        task = Task.objects.get(pk=pk)
-        if task.author.id != request.user.id:
-            messages.error(
-                request, _("A task can only be deleted by its author.")
-            )
+class DeleteTaskView(LoginRequiredMixin, View):
+
+    def dispatch(self, request, *args, **kwargs):
+        """Проверка, что пользователь — автор задачи, до любого метода."""
+        self.task = get_object_or_404(Task, pk=kwargs["pk"])
+        if self.task.author != request.user:
+            messages.error(request, _("A task can only be deleted by its author."))
             return redirect("tasks:index")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
         return render(
             request,
             "tasks/delete.html",
-            context={
-                "task": task,
-            },
+            context={"task": self.task},
         )
 
-    def post(self, request, pk):
-        task = get_object_or_404(Task, pk=pk)
-        task.delete()
+    def post(self, request, *args, **kwargs):
+        self.task.delete()
         messages.success(request, _("Task successfully deleted"))
         return redirect("tasks:index")
 
