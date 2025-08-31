@@ -88,12 +88,6 @@ class CreateUserForm(UserCreationForm):
         return username
     
 
-
-    from django import forms
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
 class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User

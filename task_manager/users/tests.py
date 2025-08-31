@@ -40,7 +40,9 @@ class UserCRUDTests(TestCase):
     def test_update_self_user(self):
         """Пользователь может обновить сам себя"""
         self.client.login(username="testuser", password="12345")
-        response = self.client.post(reverse("users:update", args=[self.user.id]), {
+        response = self.client.post(reverse("users:update", 
+                                            args=[self.user.id]), 
+        {
             "username": "updateduser",
             "email": "updated@example.com",
             "password1": "newpassword123",
