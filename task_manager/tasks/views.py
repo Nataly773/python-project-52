@@ -14,12 +14,12 @@ from task_manager.tasks.forms import CreateTaskForm
 from django.urls import reverse
 
 
-# Базовый класс для всех представлений задач
+
 class BaseTaskView(LoginRequiredMixin, View):
     login_url = reverse_lazy("login")
-    template_name = None  # будем задавать в наследниках
+    template_name = None  
 
-# Создание задачи
+
 
 class CreateTaskView(BaseTaskView):
     template_name = "tasks/create.html"
@@ -39,7 +39,7 @@ class CreateTaskView(BaseTaskView):
             messages.success(request, _("Task successfully created"))
             return HttpResponseRedirect(reverse("tasks:index"))
         else:
-            print(form.errors)  # <-- вывод ошибок для отладки
+            print(form.errors)  
         return render(request, self.template_name, {"form": form})
 
 # Список задач

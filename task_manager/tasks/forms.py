@@ -25,8 +25,8 @@ class CreateTaskForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Сделать executor необязательным
+       
         self.fields["executor"].required = False
         self.fields["executor"].empty_label = "---------"
-        # Сделать status необязательным (если нужно)
+      
         self.fields["status"].required = False
