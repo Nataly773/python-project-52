@@ -3,8 +3,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import gettext_lazy as _
 
-from task_manager.users.models import User
-
 
 User = get_user_model()
 
@@ -115,7 +113,8 @@ class UpdateUserForm(forms.ModelForm):
                 )
         if not all(c.isalnum() or c in "@.+-_" for c in username):
             raise forms.ValidationError(
-                "Please enter a valid username. Letters, numbers and @/./+/-/_ only."
+                "Please enter a valid username."
+                "Letters, numbers and @/./+/-/_ only."
             )
         # Проверка уникальности, исключая текущего пользователя
         existing_user = (
@@ -125,5 +124,7 @@ class UpdateUserForm(forms.ModelForm):
             .first()
         )
         if existing_user:
-            raise forms.ValidationError("A user with this username already exists.")
+            raise forms.ValidationError(
+                "A user with this username already exists."
+                )
         return username

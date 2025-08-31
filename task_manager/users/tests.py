@@ -53,14 +53,15 @@ class UserCRUDTests(TestCase):
     def test_update_other_user_forbidden(self):
         """Обычный пользователь не может обновить другого"""
         self.client.login(username="testuser", password="12345")
-        response = self.client.post(reverse("users:update", 
-                                            args=[self.admin.id]), 
-                                            {
+        response = self.client.post(
+            reverse("users:update", args=[self.admin.id]), 
+        {
             "username": "hacker",
             "email": "hacker@example.com",
             "password1": "hackpass123",
             "password2": "hackpass123",
-        })
+        }
+        )
         self.admin.refresh_from_db()
         self.assertNotEqual(self.admin.username, "hacker")
         self.assertEqual(response.status_code, 302)  # редирект обратно
