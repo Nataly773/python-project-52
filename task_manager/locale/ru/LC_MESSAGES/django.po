@@ -354,7 +354,7 @@ msgstr "Изменить пользователя"
 
 #: task_manager/templates/users/update.html:12
 msgid "Update"
-msgstr "Обновить"
+msgstr "Изменить"
 
 #: task_manager/users/forms.py:22
 msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
