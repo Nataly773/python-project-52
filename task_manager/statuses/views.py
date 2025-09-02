@@ -6,10 +6,11 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import ListView
 from task_manager.tasks.models import Task
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from .forms import CreateStatusForm
 from .models import Status
 from django.views.generic.edit import DeleteView
+
 
 
 class BaseStatusView(LoginRequiredMixin, View):
@@ -40,13 +41,6 @@ class CreateStatusesView(BaseStatusView, CreateView):
         return response
 
 
-from django.urls import reverse_lazy
-from django.contrib import messages
-from django.utils.translation import gettext_lazy as _
-from django.views.generic.edit import UpdateView
-from task_manager.statuses.models import Status
-from task_manager.statuses.forms import CreateStatusForm
-
 
 class UpdateStatusesView(BaseStatusView, UpdateView):
     model = Status
@@ -60,19 +54,24 @@ class UpdateStatusesView(BaseStatusView, UpdateView):
         messages.success(self.request, _("Status successfully updated"))
         return response
 
-class DeleteStatusesView(BaseStatusView, DeleteView):
-    model = Status
-    template_name = "statuses/delete.html"
-    success_url = reverse_lazy("statuses:index")
-    context_object_name = "status"
+class DeleteStatusesView(BaseStatusView):
+    def get(self, request, pk):
+        status = Status.objects.get(pk=pk)
+        return render(
+            request,
+            "statuses/delete.html",
+            context={
+                "status": status,
+            },
+        )
 
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        if Task.objects.filter(status=self.object).exists():
+    def post(self, request, pk):
+        status = get_object_or_404(Status, pk=pk)
+        if Task.objects.filter(status=status).exists():
             messages.error(
                 request, _("Cannot delete status because it is in use")
             )
             return redirect("statuses:index")
-        self.object.delete()
+        status.delete()
         messages.success(request, _("Status successfully deleted"))
-        return redirect(self.success_url)
+        return redirect("statuses:index")

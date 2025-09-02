@@ -81,7 +81,7 @@ msgstr "Статус успешно изменен"
 msgid "Cannot delete status because it is in use"
 msgstr "Невозможно удалить статус, так как он используется"
 
-#: task_manager/statuses/views.py:77
+#: task_manager/statuses/views.py:70
 msgid "Status successfully deleted"
 msgstr "Статус успешно удален"
 
