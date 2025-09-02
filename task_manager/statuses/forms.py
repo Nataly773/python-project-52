@@ -16,7 +16,11 @@ class CreateStatusForm(forms.ModelForm):
     def clean_name(self):
         status_name = self.cleaned_data["name"]
 
-        if Status.objects.filter(name=status_name).exclude(pk=self.instance.pk).exists():
+        if (
+            Status.objects.filter(name=status_name)
+            .exclude(pk=self.instance.pk)
+            .exists()
+        ):
             raise forms.ValidationError(
                 _("Task status with this name already exists")
             )

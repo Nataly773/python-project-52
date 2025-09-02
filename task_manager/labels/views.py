@@ -15,9 +15,11 @@ class BaseLabelsView(LoginRequiredMixin, View):
     redirect_field_name = None
 
     def handle_no_permission(self):
-        messages.error(self.request, _("You are not logged in! Please sign in."))
+        messages.error(
+            self.request,
+            _("You are not logged in! Please sign in.")
+            )
         return super().handle_no_permission()
-
 
 
 class IndexLabelsView(BaseLabelsView):
@@ -44,7 +46,14 @@ class UpdateLabelsView(BaseLabelsView):
     def get(self, request, pk):
         label = get_object_or_404(Label, pk=pk)
         form = CreateLabelForm(instance=label)
-        return render(request, "labels/update.html", {"form": form, "label": label})
+        return render(
+            request,
+            "labels/update.html",
+            {
+                "form": form, 
+                "label": label
+            }
+            )
 
     def post(self, request, pk):
         label = get_object_or_404(Label, pk=pk)
@@ -53,8 +62,14 @@ class UpdateLabelsView(BaseLabelsView):
             form.save()
             messages.success(request, _("Label successfully updated"))
             return redirect("labels:index")
-        return render(request, "labels/update.html", {"form": form, "label": label})
-
+        return render(
+            request,
+            "labels/update.html",
+            {
+                "form": form,
+                "label": label
+            }
+            )
 
 
 class DeleteLabelsView(BaseLabelsView):

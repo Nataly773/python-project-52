@@ -12,13 +12,15 @@ from .models import Status
 from django.views.generic.edit import DeleteView
 
 
-
 class BaseStatusView(LoginRequiredMixin, View):
     login_url = reverse_lazy("login")
     redirect_field_name = None
 
     def handle_no_permission(self):
-        messages.error(self.request, _("You are not logged in! Please sign in"))
+        messages.error(
+            self.request, 
+            _("You are not logged in! Please sign in")
+            )
         return super().handle_no_permission()
 
 
@@ -41,7 +43,6 @@ class CreateStatusesView(BaseStatusView, CreateView):
         return response
 
 
-
 class UpdateStatusesView(BaseStatusView, UpdateView):
     model = Status
     form_class = CreateStatusForm
@@ -53,6 +54,7 @@ class UpdateStatusesView(BaseStatusView, UpdateView):
         response = super().form_valid(form)
         messages.success(self.request, _("Status successfully updated"))
         return response
+
 
 class DeleteStatusesView(BaseStatusView):
     def get(self, request, pk):
