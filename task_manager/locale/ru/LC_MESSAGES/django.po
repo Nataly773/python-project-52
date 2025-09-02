@@ -422,7 +422,7 @@ msgstr "Невозможно удалить пользователя, так к�
 
 #: task_manager/users/views.py:101
 msgid "User successfully deleted"
-msgstr "Пользователь успешно удалён"
+msgstr "Пользователь успешно удален"
 
 #: task_manager/views.py:29
 msgid "You are login"
