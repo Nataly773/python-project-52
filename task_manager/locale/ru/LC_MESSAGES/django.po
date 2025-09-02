@@ -410,7 +410,7 @@ msgstr "Пользователь успешно зарегистрирован"
 
 #: task_manager/users/views.py:63
 msgid "User successfully changed."
-msgstr "Пользователь успешно изменён."
+msgstr "Пользователь успешно изменен"
 
 #: task_manager/users/views.py:73 task_manager/users/views.py:110
 msgid "You do not have permission to change another user."
