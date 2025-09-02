@@ -414,7 +414,7 @@ msgstr "Пользователь успешно изменен"
 
 #: task_manager/users/views.py:73 task_manager/users/views.py:110
 msgid "You do not have permission to change another user."
-msgstr "У вас нет прав изменять другого пользователя."
+msgstr "У вас нет прав для изменения"
 
 #: task_manager/users/views.py:97
 msgid "Cannot delete user because it is in use"
