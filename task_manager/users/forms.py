@@ -75,12 +75,12 @@ class CreateUserForm(UserCreationForm):
         existing_user = User.objects.filter(username=username).first()
         if(
             existing_user 
-            and (not hasattr(self, "instance") or self.instance.pk != existing_user.pk
+            and (not hasattr(self, "instance") or self.instance.pk != existing_user.pk)
         ):
             self.add_error(
                 "username",
                 _("A user with this username already exists.")
-                )
+        )
 
         return username
 

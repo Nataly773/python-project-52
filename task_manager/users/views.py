@@ -25,6 +25,7 @@ class IndexUserView(ListView):
     context_object_name = "users"
     ordering = ["id"]
 
+
 class CreateUserView(View):
     def get(self, request):
         return self._render_form(request, CreateUserForm())
@@ -70,7 +71,8 @@ class UpdateUserView(BaseUserView):
 
         if auth_user_id != int(user_id) and not self.request.user.is_superuser:
             messages.error(
-                self.request,_("You do not have permission to change another user."),
+                self.request,
+                _("You do not have permission to change another user."),
             )
             return redirect("users:index")
         return user
@@ -107,7 +109,8 @@ class DeleteUserView(BaseUserView):
 
         if auth_user_id != int(user_id) and not self.request.user.is_superuser:
             messages.error(
-                self.request,_("You do not have permission to change another user."),
+                self.request,
+                _("You do not have permission to change another user."),
             )
             return redirect("users:index")
         return user
