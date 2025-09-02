@@ -9,7 +9,6 @@ from task_manager.tasks.models import Task
 from django.views.generic.edit import CreateView, UpdateView
 from .forms import CreateStatusForm
 from .models import Status
-from django.views.generic.edit import DeleteView
 
 
 class BaseStatusView(LoginRequiredMixin, View):
