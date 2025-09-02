@@ -99,7 +99,7 @@ DATABASES = {
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES["default"].update(db_from_env)
 
-
+LOGIN_URL = '/login/'
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -128,14 +128,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = "ru"
-
-TIME_ZONE = "UTC"
-
-USE_I18N = True
-
-USE_L10N = True
-
+LANGUAGE_CODE = 'en-us'  # основной язык проекта
+USE_I18N = True           # включить интернационализацию
+USE_L10N = True           # локализация форматов
 USE_TZ = True
 
 

@@ -5,11 +5,10 @@ from task_manager.labels.models import Label
 
 
 class CreateLabelForm(forms.ModelForm):
-
     class Meta:
         model = Label
         fields = ["name"]
-        labels = {"name": _("Имя")}
+        labels = {"name": _("Name")}
 
     def clean_name(self):
         label_name = self.cleaned_data["name"]
@@ -17,6 +16,6 @@ class CreateLabelForm(forms.ModelForm):
 
         if label.exists() and self.instance.pk != label[0].pk:
             raise forms.ValidationError(
-                _("Task status with this Name already exists.")
+                _("Label with this name already exists.")
             )
-        return self.cleaned_data["name"]
+        return label_name

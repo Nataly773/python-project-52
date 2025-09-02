@@ -5,13 +5,13 @@
 {% block content %}
 <main>
   <div class="container-md mt-3">
-    <h1>Создать задачу</h1>
+    <h1>{% trans "Create Task" %}</h1>
 
     <form id="task-create-form" method="post" action="{% url 'tasks:create' %}">
       {% csrf_token %}
       {% bootstrap_form form %}
       <!-- plain explicit submit button: текст совпадает с тем, что ищет тест -->
-      <button type="submit" class="btn btn-primary">Создать</button>
+      <button type="submit" class="btn btn-primary">{% trans "Create" %}</button>
     </form>
   </div>
 </main>

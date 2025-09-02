@@ -54,4 +54,5 @@ class TaskFilter(df.FilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not self.data:
-            self.form.initial = {"status": "", "executor": "", "label": ""}
+            self.form.initial = {"status": "", "executor": "", "labels": ""}
+

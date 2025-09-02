@@ -3,14 +3,14 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1>{% translate "Пользователи" %}</h1>
+    <h1>{% trans "Users" %}</h1>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>{% translate "ID" %}</th>
-                <th>{% translate "Имя пользователя" %}</th>
-                <th>{% translate "Полное имя" %}</th>
-                <th>{% translate "Действия" %}</th>
+                <th>{% trans "ID" %}</th>
+                <th>{% trans "Username" %}</th>
+                <th>{% trans "Full name" %}</th>
+                <th>{% trans "Actions" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -20,13 +20,13 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.get_full_name }}</td>
                 <td>
-                    <a href="{% url 'users:update' user.id %}">{% translate "Edit" %}</a><br>
-                    <a href="{% url 'users:delete' user.id %}">{% translate "Delete" %}</a>
+                    <a href="{% url 'users:update' user.id %}">{% trans "Edit" %}</a><br>
+                    <a href="{% url 'users:delete' user.id %}">{% trans "Delete" %}</a>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">{% translate "Пользователей пока нет" %}</td>
+                <td colspan="4">{% trans "No users yet" %}</td>
             </tr>
             {% endfor %}
         </tbody>

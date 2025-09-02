@@ -14,12 +14,10 @@ class BaseLabelsView(LoginRequiredMixin, View):
     login_url = reverse_lazy("login")
     redirect_field_name = None
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(
-                request, _("You are not logged in! Please sign in.")
-            )
-        return super().dispatch(request, *args, **kwargs)
+    def handle_no_permission(self):
+        messages.error(self.request, _("You are not logged in! Please sign in."))
+        return super().handle_no_permission()
+
 
 
 class IndexLabelsView(BaseLabelsView):
@@ -30,26 +28,23 @@ class IndexLabelsView(BaseLabelsView):
 
 class CreateLabelsView(BaseLabelsView):
     def get(self, request):
-        return self._render_form(request, CreateLabelForm())
+        form = CreateLabelForm()
+        return render(request, "labels/create.html", context={"form": form})
 
     def post(self, request):
         form = CreateLabelForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, _("The label was successfully created."))
+            messages.success(request, _("Label successfully created"))
             return redirect("labels:index")
-        return self._render_form(request, form)
-
-    def _render_form(self, request, form):
         return render(request, "labels/create.html", context={"form": form})
 
 
 class UpdateLabelsView(BaseLabelsView):
     def get(self, request, pk):
         label = get_object_or_404(Label, pk=pk)
-        return self._render_form(
-            request, CreateLabelForm(instance=label), label
-        )
+        form = CreateLabelForm(instance=label)
+        return render(request, "labels/update.html", {"form": form, "label": label})
 
     def post(self, request, pk):
         label = get_object_or_404(Label, pk=pk)
@@ -58,29 +53,14 @@ class UpdateLabelsView(BaseLabelsView):
             form.save()
             messages.success(request, _("Label successfully updated"))
             return redirect("labels:index")
-        return self._render_form(request, form, label)
+        return render(request, "labels/update.html", {"form": form, "label": label})
 
-    def _render_form(self, request, form, label):
-        return render(
-            request,
-            "labels/update.html",
-            context={
-                "form": form,
-                "label": label,
-            },
-        )
 
 
 class DeleteLabelsView(BaseLabelsView):
     def get(self, request, pk):
-        label = Label.objects.get(pk=pk)
-        return render(
-            request,
-            "labels/delete.html",
-            context={
-                "label": label,
-            },
-        )
+        label = get_object_or_404(Label, pk=pk)
+        return render(request, "labels/delete.html", {"label": label})
 
     def post(self, request, pk):
         label = get_object_or_404(Label, pk=pk)
@@ -92,3 +72,4 @@ class DeleteLabelsView(BaseLabelsView):
         label.delete()
         messages.success(request, _("Label successfully deleted"))
         return redirect("labels:index")
+

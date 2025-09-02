@@ -4,15 +4,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views import View
-
+from django.views.generic import ListView
 from task_manager.tasks.models import Task
 from task_manager.users.forms import CreateUserForm
 from task_manager.users.models import User
 
 
 class BaseUserView(LoginRequiredMixin, View):
-    login_url = "/login/"
-
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.error(
@@ -21,15 +19,11 @@ class BaseUserView(LoginRequiredMixin, View):
         return super().dispatch(request, *args, **kwargs)
 
 
-class IndexUserView(View):
-    def get(self, request):
-        users = User.objects.all().order_by("id")
-        return render(
-            request,
-            "users/index.html",
-            context={"users": users},
-        )
-
+class IndexUserView(ListView):
+    model = User
+    template_name = "users/index.html"
+    context_object_name = "users"
+    ordering = ["id"]
 
 class CreateUserView(View):
     def get(self, request):
@@ -76,8 +70,7 @@ class UpdateUserView(BaseUserView):
 
         if auth_user_id != int(user_id) and not self.request.user.is_superuser:
             messages.error(
-                self.request,
-                _("You do not have permission to change another user."),
+                self.request,_("You do not have permission to change another user."),
             )
             return redirect("users:index")
         return user
@@ -114,8 +107,7 @@ class DeleteUserView(BaseUserView):
 
         if auth_user_id != int(user_id) and not self.request.user.is_superuser:
             messages.error(
-                self.request,
-                _("You do not have permission to change another user."),
+                self.request,_("You do not have permission to change another user."),
             )
             return redirect("users:index")
         return user

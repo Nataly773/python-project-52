@@ -8,19 +8,17 @@ class CreateStatusForm(forms.ModelForm):
 
     class Meta:
         model = Status
-        fields = [
-            "name",
-        ]
+        fields = ["name"]
         labels = {
             "name": _("Name"),
         }
 
     def clean_name(self):
         status_name = self.cleaned_data["name"]
-        stasus = Status.objects.filter(name=status_name)
 
-        if stasus.exists() and self.instance.pk != stasus[0].pk:
+        if Status.objects.filter(name=status_name).exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError(
-                _("Task status with this Name already exists.")
+                _("Task status with this name already exists")
             )
-        return self.cleaned_data["name"]
+
+        return status_name
