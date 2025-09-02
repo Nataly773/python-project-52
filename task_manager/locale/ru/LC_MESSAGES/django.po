@@ -329,7 +329,7 @@ msgstr "Изменение задачи"
 
 #: task_manager/templates/users/create.html:12
 msgid "Registr"
-msgstr "зарегистрирован"
+msgstr "Зарегистрировать"
 
 #: task_manager/templates/users/delete.html:11
 msgid "Deleting user"
