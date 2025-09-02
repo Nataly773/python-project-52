@@ -54,7 +54,7 @@ class CreateUserForm(UserCreationForm):
         elif len(password) < 3:
             self.add_error(
                 "password2",
-                _("The password you entered is too short." \
+                _("The password you entered is too short." 
                 "It must contain at least 3 characters."),
             )
         return cleaned_data
@@ -68,14 +68,16 @@ class CreateUserForm(UserCreationForm):
         if not all(c.isalnum() or c in "@.+-_" for c in username):
             self.add_error(
                 "username",
-                _("Please enter a valid username." \
+                _("Please enter a valid username." 
                 "Letters, numbers and @/./+/-/_ only."),
             )
 
         existing_user = User.objects.filter(username=username).first()
-        if(
+        if (
             existing_user 
-            and (not hasattr(self, "instance") or self.instance.pk != existing_user.pk)
+            and (
+                not hasattr(self, "instance")
+                or self.instance.pk != existing_user.pk)
         ):
             self.add_error(
                 "username",
@@ -115,6 +117,8 @@ class UpdateUserForm(forms.ModelForm):
             .first()
         )
         if existing_user:
-            raise forms.ValidationError(_("A user with this username already exists."))
+            raise forms.ValidationError(
+                _("A user with this username already exists.")
+                )
 
         return username
