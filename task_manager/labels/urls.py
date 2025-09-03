@@ -14,5 +14,4 @@ urlpatterns = [
     path("create/", CreateLabelsView.as_view(), name="create"),
     path("<int:pk>/update/", UpdateLabelsView.as_view(), name="update"),
     path("<int:pk>/delete/", DeleteLabelsView.as_view(), name="delete"),
-    
 ]

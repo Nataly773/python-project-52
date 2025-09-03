@@ -109,7 +109,6 @@ class UpdateUserForm(forms.ModelForm):
                 "numbers and @/./+/-/_ only.")
             )
 
-        # Проверка уникальности, исключая текущего пользователя
         existing_user = (
             User.objects
             .filter(username=username)

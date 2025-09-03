@@ -1,5 +1,6 @@
 from rollbar.contrib.django.middleware import RollbarNotifierMiddleware
 
+
 class CustomRollbarNotifierMiddleware(RollbarNotifierMiddleware):
 
     def get_extra_data(self, request, exc):

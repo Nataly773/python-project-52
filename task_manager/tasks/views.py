@@ -4,7 +4,6 @@ from django.shortcuts import render, redirect
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.urls import reverse_lazy
-
 from django.http import HttpResponseRedirect
 from .forms import CreateTaskForm
 from .models import Task
@@ -32,7 +31,7 @@ class CreateTaskView(BaseTaskView):
             task = form.save(commit=False)
             task.author = request.user
             task.save()
-            form.save_m2m()  # для поля labels
+            form.save_m2m()  
             messages.success(request, _("Task successfully created"))
             return HttpResponseRedirect(reverse("tasks:index"))
         else:

@@ -13,20 +13,15 @@ User = get_user_model()
 
 class LabelCRUDTest(TestCase):
     def setUp(self):
-        # Активируем английский язык для тестов
         translation.activate('en')
-
-        # Создаем пользователя
         self.user = User.objects.create_user(
             username="testuser",
             password="12345"
         )
         self.client.login(username="testuser", password="12345")
 
-        # Создаем статус для задач
         self.status = Status.objects.create(name="New Status")
 
-        # Создаем начальную метку
         self.label = Label.objects.create(name="Initial Label")
 
     def test_list_labels(self):
@@ -65,7 +60,6 @@ class LabelCRUDTest(TestCase):
         self.assertEqual(str(messages[0]), "Метка успешно удалена")
 
     def test_delete_label_in_use(self):
-        # Создаем задачу с привязанной меткой и статусом
         task = Task.objects.create(
             name="Test Task",
             description="Task description",
@@ -78,7 +72,8 @@ class LabelCRUDTest(TestCase):
             reverse("labels:delete", args=[self.label.pk])
         )
         self.assertRedirects(response, reverse("labels:index"))
-        # Метка не должна удалиться, потому что она используется
         self.assertTrue(Label.objects.filter(pk=self.label.pk).exists())
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "Невозможно удалить метку, так как она используется")
+        self.assertEqual(str(messages[0]),
+                        "Невозможно удалить метку, так как она используется"
+                        )

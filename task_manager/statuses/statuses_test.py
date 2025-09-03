@@ -10,13 +10,11 @@ User = get_user_model()
 
 class StatusCRUDTest(TestCase):
     def setUp(self):
-        # создаем юзера и логинимся
         self.user = User.objects.create_user(
             username="testuser", password="password123"
         )
         self.client.login(username="testuser", password="password123")
 
-        # создаем статус для тестов update/delete
         self.status = Status.objects.create(name="В работе")
 
     def test_list_statuses(self):

@@ -66,7 +66,7 @@ class UserCRUDTests(TestCase):
         )
         self.admin.refresh_from_db()
         self.assertNotEqual(self.admin.username, "hacker")
-        self.assertEqual(response.status_code, 302)  # редирект обратно
+        self.assertEqual(response.status_code, 302)  
 
     def test_delete_self_user(self):
         """Пользователь может удалить себя, если нет задач"""
