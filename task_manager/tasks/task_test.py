@@ -77,7 +77,7 @@ class TaskCRUDTest(TestCase):
         # Проверяем сообщение об ошибке
         messages = list(response.wsgi_request._messages)
         self.assertEqual(str(messages[0]), 
-                         'Задачу может удалить только её автор.')
+                         'Задачу может удалить только ее автор')
 
     def test_access_requires_login(self):
         response = self.client.get(reverse('tasks:create'))

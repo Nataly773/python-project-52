@@ -81,4 +81,4 @@ class LabelCRUDTest(TestCase):
         # Метка не должна удалиться, потому что она используется
         self.assertTrue(Label.objects.filter(pk=self.label.pk).exists())
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "Cannot delete label because it is in use")
+        self.assertEqual(str(messages[0]), "Невозможно удалить метку, так как она используется")
