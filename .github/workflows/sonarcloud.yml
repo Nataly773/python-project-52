@@ -30,7 +30,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           organization: <your_organization>
-          token: ${{ 10abdd0e2eeded5752a9bf3e984fc343e1988af3 }}
+          token: ${{ secrets.SONAR_TOKEN }}
           projectKey: python_project_52
           projectName: Python Project 52
           args: >
