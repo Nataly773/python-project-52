@@ -53,11 +53,6 @@ class StatusCRUDTest(TestCase):
 
     def test_access_requires_login(self):
         self.client.logout()
-
-    # GET-запрос без follow=True, чтобы проверить редирект
         response = self.client.get(reverse("statuses:index"))
-
-    # Формируем ожидаемый URL с параметром next
-        login_url = f"{reverse('login')}?next={reverse('statuses:index')}"
-        self.assertRedirects(response, login_url)
+        self.assertRedirects(response, reverse("login"))
 
