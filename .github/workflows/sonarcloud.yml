@@ -17,23 +17,24 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
+      - name: Install dependencies with Poetry
         run: |
-          pip install -r requirements.txt
-          pip install pytest pytest-cov
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install
 
       - name: Run tests with coverage
         run: |
-          pytest task_manager --cov=task_manager --cov-report=xml
+          poetry run pytest task_manager --cov=task_manager --cov-report=xml
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          organization: <your_organization>
-          token: ${{ secrets.SONAR_TOKEN }}
-          projectKey: python_project_52
-          projectName: Python Project 52
           args: >
+            -Dsonar.projectKey=python_project_52
+            -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.sources=task_manager,main.py
             -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.exclusions=**/tests/**,**/migrations/**,**/.venv/**
