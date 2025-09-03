@@ -1,40 +1,62 @@
-name: Python CI with SonarCloud (uv)
+name: Python CI with SonarQube
 
 on:
   push:
-    branches: [main]
   pull_request:
 
 jobs:
-  sonar:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # 1. Проверка кода
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      # 2. Установка Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Install dependencies via uv
+      # 3. Установка зависимостей
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install poetry uv
-          uv run poetry install --no-root
+          pip install uv pytest pytest-cov ruff
 
-      - name: Run tests with coverage via uv
+      # 4. Синхронизация uv (если используется uv workspace)
+      - name: Sync uv workspace
         run: |
-          uv run poetry run pytest task_manager --cov=task_manager --cov-report=xml
+          uv sync
 
-      - name: SonarCloud Scan via uv
+      # 5. Линтер и базовые проверки
+      - name: Run linter and basic checks
+        run: |
+          uv run ruff check task_manager
+
+      # 6. Тесты с покрытием
+      - name: Run tests with coverage
+        run: |
+          uv run pytest task_manager --cov=task_manager --cov-report=xml
+
+      # 7. Проверка файла coverage.xml
+      - name: Show coverage report
+        run: |
+          echo "=== Coverage file location ==="
+          find . -name "coverage.xml"
+          echo "=== Preview of coverage.xml ==="
+          head -n 50 coverage.xml || echo "coverage.xml not found or empty"
+
+      # 8. Отправка данных в SonarQube
+      - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=python_project_52
-            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.projectKey=Nataly773_python-project-52
+            -Dsonar.organization=nataly773
             -Dsonar.sources=task_manager,main.py
-            -Dsonar.python.coverage.reportPaths=coverage.xml
             -Dsonar.exclusions=**/tests/**,**/migrations/**,**/.venv/**
+            -Dsonar.python.coverage.reportPaths=coverage.xml
