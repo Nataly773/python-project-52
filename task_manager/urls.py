@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from task_manager import views
 
 from task_manager.views import IndexView, LoginView, LogoutView
 
@@ -12,5 +13,5 @@ urlpatterns = [
     path("statuses/", include("task_manager.statuses.urls")),
     path('tasks/', include('task_manager.tasks.urls')),
     path("labels/", include("task_manager.labels.urls")),
-]
+   ]
     

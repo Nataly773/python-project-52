@@ -28,3 +28,9 @@ collectstatic:
 
 test:
 	uv run python3 manage.py test
+
+pytest:
+	uv run pytest
+
+test-coverage:
+	uv run pytest --cov=. --cov-report=xml	

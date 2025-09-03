@@ -5,10 +5,10 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import View
 
+
 from task_manager.labels.forms import CreateLabelForm
 from task_manager.labels.models import Label
 from task_manager.tasks.models import Task
-
 
 class BaseLabelsView(LoginRequiredMixin, View):
     login_url = reverse_lazy("login")
@@ -17,6 +17,7 @@ class BaseLabelsView(LoginRequiredMixin, View):
     def handle_no_permission(self):
         messages.error(
             self.request,
+      
             _("You are not logged in! Please sign in.")
             )
         return super().handle_no_permission()

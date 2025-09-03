@@ -5,7 +5,9 @@ from .views import (
     DeleteStatusesView,
     IndexStatusesView,
     UpdateStatusesView,
+   
 )
+
 
 app_name = "statuses"
 

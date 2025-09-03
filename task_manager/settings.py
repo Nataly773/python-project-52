@@ -199,3 +199,9 @@ STATIC_ROOT = os.path.join(STATIC_URL, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+ROLLBAR = {
+    'access_token': 'c2230684db2249ab9277ef65370bcc1a7f17f15afebba6744a48036bde9c62cab875afebba6744a48036bde9c62cab87',
+    'environment': 'development',  # или production
+    'root': BASE_DIR,
+}
+
