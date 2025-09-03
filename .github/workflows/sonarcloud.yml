@@ -57,6 +57,6 @@ jobs:
           args: >
             -Dsonar.projectKey=Nataly773_python-project-52
             -Dsonar.organization=nataly773
-            -Dsonar.sources=task_manager,main.py
+            -Dsonar.sources=task_manager/
             -Dsonar.exclusions=**/tests/**,**/migrations/**,**/.venv/**
             -Dsonar.python.coverage.reportPaths=coverage.xml
