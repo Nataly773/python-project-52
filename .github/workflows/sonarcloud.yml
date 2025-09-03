@@ -1,4 +1,4 @@
-name: Python CI with SonarCloud
+name: Python CI with SonarCloud (uv)
 
 on:
   push:
@@ -17,17 +17,17 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies with Poetry
+      - name: Install dependencies via uv
         run: |
           python -m pip install --upgrade pip
-          pip install poetry
-          poetry install
+          pip install poetry uv
+          uv run poetry install --no-root
 
-      - name: Run tests with coverage
+      - name: Run tests with coverage via uv
         run: |
-          poetry run pytest task_manager --cov=task_manager --cov-report=xml
+          uv run poetry run pytest task_manager --cov=task_manager --cov-report=xml
 
-      - name: SonarCloud Scan
+      - name: SonarCloud Scan via uv
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
