@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "insecure-test-key")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # 🌍 Hosts
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "webserver", "webserver:9000", "python-project-52-ecw0.onrender.com"]
 
 # 🗄️ Database
 DATABASES = {
