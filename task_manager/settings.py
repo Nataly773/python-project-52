@@ -18,23 +18,34 @@ from django.utils.translation import gettext_lazy as _
 
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# 🔑 Secret key
+SECRET_KEY = os.getenv("SECRET_KEY", "insecure-test-key")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
+# ⚙️ Debug
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "webserver", "python-project-52-ecw0.onrender.com"]
+# 🌍 Hosts
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
-# Application definition
+# 🗄️ Database
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": str(BASE_DIR / "db.sqlite3"),
+    }
+}
 
+db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=False)
+if db_from_env:
+    DATABASES["default"].update(db_from_env)
+
+# 👤 Users
+AUTH_USER_MODEL = "users.User"
+LOGIN_URL = "/login/"
+
+# 📦 Installed apps
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.admin",
@@ -50,8 +61,6 @@ INSTALLED_APPS = [
     "task_manager.labels",
     "task_manager.tasks",
 ]
-
-AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -85,125 +94,41 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "task_manager.wsgi.application"
 
+# 🔑 Password validators (пока выключены)
+AUTH_PASSWORD_VALIDATORS = []
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": str(BASE_DIR / "db.sqlite3"),  # ← обязательно str()
-    }
-}
-
-# Если есть DATABASE_URL в окружении → заменяем на Postgres
-db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=False)
-if db_from_env:
-    DATABASES["default"].update(db_from_env)
-
-LOGIN_URL = '/login/'
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    # {
-    #     'NAME':
-    #         'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    # },
-    # {
-    #     "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    #     "OPTIONS": {
-    #         "min_length": 3,
-    #     },
-    # },
-    # {
-    #     'NAME':
-    #         'django.contrib.auth.password_validation.CommonPasswordValidator',
-    # },
-    # {
-    #     'NAME':
-    #         'django.contrib.auth.password_validation.NumericPasswordValidator',
-    # },
-]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'  # основной язык проекта
-USE_I18N = True           # включить интернационализацию
-USE_L10N = True           # локализация форматов
+# 🌐 Internationalization
+LANGUAGE_CODE = "ru"
+TIME_ZONE = "UTC"
+USE_I18N = True
 USE_TZ = True
-
 
 LANGUAGES = [
     ("en", _("English")),
     ("ru", _("Russian")),
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# 📂 Static files
+STATIC_URL = "/static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-ROLLBAR = {
-    "access_token": os.getenv("ROLLBAR_ACCESS_TOKEN"),
-    "environment": "development" if DEBUG else "production",
-    "code_version": "1.0",
-    "root": BASE_DIR,
-}
-
-# WhiteNoise
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
+# 🔑 Default PK field
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LANGUAGE_CODE = 'ru'
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-LANGUAGES = (
-    ('ru', 'Russian'),
-    ('en', 'English'),
-)
-
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(STATIC_URL, 'static')
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+# 🛠 Rollbar
 ROLLBAR = {
-    'access_token': 'c2230684db2249ab9277ef65370bcc1a7f17f15afebba6744a48036bde9c62cab875afebba6744a48036bde9c62cab87',
-    'environment': 'development',  # или production
-    'root': BASE_DIR,
+    "access_token": os.getenv("ROLLBAR_ACCESS_TOKEN"),
+    "environment": "development" if DEBUG else "production",
+    "code_version": "1.0",
+    "root": BASE_DIR,
 }
 
