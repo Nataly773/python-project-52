@@ -20,16 +20,16 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 🔑 Secret key
+
 SECRET_KEY = os.getenv("SECRET_KEY", "insecure-test-key")
 
-# ⚙️ Debug
+
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-# 🌍 Hosts
+
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "webserver", "webserver:9000", "python-project-52-ecw0.onrender.com"]
 
-# 🗄️ Database
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -41,11 +41,10 @@ db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=False)
 if db_from_env:
     DATABASES["default"].update(db_from_env)
 
-# 👤 Users
+
 AUTH_USER_MODEL = "users.User"
 LOGIN_URL = "/login/"
 
-# 📦 Installed apps
 INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.admin",
@@ -94,10 +93,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "task_manager.wsgi.application"
 
-# 🔑 Password validators (пока выключены)
+
 AUTH_PASSWORD_VALIDATORS = []
 
-# 🌐 Internationalization
+
 LANGUAGE_CODE = "ru"
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -110,7 +109,7 @@ LANGUAGES = [
 
 LOCALE_PATHS = [BASE_DIR / "locale"]
 
-# 📂 Static files
+
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -121,10 +120,9 @@ STORAGES = {
     },
 }
 
-# 🔑 Default PK field
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# 🛠 Rollbar
 ROLLBAR = {
     "access_token": os.getenv("ROLLBAR_ACCESS_TOKEN"),
     "environment": "development" if DEBUG else "production",
