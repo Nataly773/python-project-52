@@ -2,19 +2,31 @@ from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import translation
 
 from task_manager.labels.models import Label
 from task_manager.tasks.models import Task
+from task_manager.statuses.models import Status
 
 User = get_user_model()
 
 
 class LabelCRUDTest(TestCase):
     def setUp(self):
+        # Активируем английский язык для тестов
+        translation.activate('en')
+
+        # Создаем пользователя
         self.user = User.objects.create_user(
-            username="testuser", 
-            password="12345")
+            username="testuser",
+            password="12345"
+        )
         self.client.login(username="testuser", password="12345")
+
+        # Создаем статус для задач
+        self.status = Status.objects.create(name="New Status")
+
+        # Создаем начальную метку
         self.label = Label.objects.create(name="Initial Label")
 
     def test_list_labels(self):
@@ -24,14 +36,13 @@ class LabelCRUDTest(TestCase):
 
     def test_create_label(self):
         response = self.client.post(
-            reverse("labels:create"), 
-            {"name": "New Label"})
+            reverse("labels:create"),
+            {"name": "New Label"}
+        )
         self.assertRedirects(response, reverse("labels:index"))
         self.assertTrue(Label.objects.filter(name="New Label").exists())
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), 
-                         "The label was successfully created."
-                         )
+        self.assertEqual(str(messages[0]), "Метка успешно создана")
 
     def test_update_label(self):
         response = self.client.post(
@@ -42,32 +53,32 @@ class LabelCRUDTest(TestCase):
         self.label.refresh_from_db()
         self.assertEqual(self.label.name, "Updated Label")
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "Label successfully updated")
+        self.assertEqual(str(messages[0]), "Метка успешно изменена")
 
     def test_delete_label_not_in_use(self):
-        response = self.client.post(reverse("labels:delete", 
-                                            args=[self.label.pk])
-                                            )
+        response = self.client.post(
+            reverse("labels:delete", args=[self.label.pk])
+        )
         self.assertRedirects(response, reverse("labels:index"))
         self.assertFalse(Label.objects.filter(pk=self.label.pk).exists())
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "Label successfully deleted")
+        self.assertEqual(str(messages[0]), "Метка успешно удалена")
 
     def test_delete_label_in_use(self):
+        # Создаем задачу с привязанной меткой и статусом
         task = Task.objects.create(
-            name="Test Task", 
-            description="Task desc", 
-            status_id=1, 
+            name="Test Task",
+            description="Task description",
+            status=self.status,
             author=self.user
         )
         task.labels.add(self.label)
-        response = self.client.post(reverse("labels:delete", 
-                                            args=[self.label.pk])
-                                            )
+
+        response = self.client.post(
+            reverse("labels:delete", args=[self.label.pk])
+        )
         self.assertRedirects(response, reverse("labels:index"))
+        # Метка не должна удалиться, потому что она используется
         self.assertTrue(Label.objects.filter(pk=self.label.pk).exists())
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), 
-                         "Cannot delete label because it is in use"
-                         )
-
+        self.assertEqual(str(messages[0]), "Cannot delete label because it is in use")
